@@ -1,58 +1,73 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <div class="title">最短路径</div>
+    <div  v-for="(item,index) in arr" :key="index">
+      <span
+          :class="{'barrier': subItem==='barrier','target': subItem==='target'}"
+          v-for="(subItem,subIndex) in item" :key="subIndex"></span>
+    </div>
   </div>
 </template>
 
 <script>
+import {toRefs,onMounted}  from  'vue'
 export default {
-  name: 'HelloWorld',
+  name: 'Main',
   props: {
     msg: String
+  },
+  setup(){
+    let data = {
+      row: 10,
+      col: 10,
+      arr: [],
+    }
+    // 初始化矩阵
+    for(let i=0;i<data.row;i++){
+      data.arr.push([])
+      for(let j=0;j<data.col;j++){
+        if(i>=2 && i<=8 && j===3) {
+          data.arr[i][j] = 'barrier'
+        }else if(i===2 && j>3 &&j<8){
+          data.arr[i][j] = 'barrier'
+        }else if(i===5 && j===6){
+          data.arr[i][j] = 'target'
+        } else {
+          data.arr[i][j] = false
+        }
+      }
+    }
+    // 设置障碍
+    console.log(data.arr)
+    onMounted(()=>{
+
+    })
+    return {
+      ...toRefs(data),
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style scoped >
+.title{
+  color: white;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+div{
+
 }
-li {
+span{
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 1px solid red;
   display: inline-block;
-  margin: 0 10px;
 }
-a {
-  color: #42b983;
+.barrier{
+  background: red;
+}
+.target{
+  background: green;
 }
 </style>
