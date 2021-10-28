@@ -33,12 +33,35 @@ export default {
         }else if(i===5 && j===6){
           data.arr[i][j] = 'target'
         } else {
-          data.arr[i][j] = false
+          data.arr[i][j] = 'no'
         }
       }
     }
+    function dfs(row,col){
+      if(row<0 || col<0 || row>data.row-1 || col>data.col-1 || data.arr[row][col] === 'barrier' || data.arr[row][col] === 'yes'){
+        return false
+      }
+      if(data.arr[row][col] === 'target'){
+        return 1
+      }
+      if(data.arr[row][col] === 'no'){
+        data.arr[row][col] = 'yes'
+        let a = dfs(row,col+1)
+        let b = dfs(row+1,col)
+        let c = dfs(row,col-1)
+        let d = dfs(row-1,col+1)
+        if(!a && !b && !c && !d) return false
+        let min = a || b || c || d
+        if(a){if(a<min) min=a}
+        if(b){if(b<min) min=b}
+        if(c){if(c<min) min=c}
+        if(d){if(d<min) min=d}
+        return min + 1
+      }
+    }
+    let s = dfs(0,0)
     // 设置障碍
-    console.log(data.arr)
+    console.log(data.arr,s)
     onMounted(()=>{
 
     })
